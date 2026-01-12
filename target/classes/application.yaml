@@ -10,3 +10,7 @@ spring:
       ddl-auto: update
 
     open-in-view: false
+logging:
+  level:
+    root: INFO
+    com.lcmuniz.rest_with_spring_boot: DEBUG
