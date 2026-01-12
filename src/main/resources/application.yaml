@@ -7,10 +7,13 @@ spring:
     password: postgres
   jpa:
     hibernate:
-      ddl-auto: update
-
+      ddl-auto: none
     open-in-view: false
+  flyway:
+    schemas: rest_with_spring_boot
+    default-schema: rest_with_spring_boot
 logging:
   level:
     root: INFO
     com.lcmuniz.rest_with_spring_boot: DEBUG
+
