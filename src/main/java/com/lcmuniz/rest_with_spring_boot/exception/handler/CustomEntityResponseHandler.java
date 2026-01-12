@@ -1,6 +1,7 @@
 package com.lcmuniz.rest_with_spring_boot.exception.handler;
 
 import com.lcmuniz.rest_with_spring_boot.exception.ExceptionResponse;
+import com.lcmuniz.rest_with_spring_boot.exception.ResourceNotFoundException;
 import com.lcmuniz.rest_with_spring_boot.exception.UnsupportedMathOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +28,23 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
         }
 
     @ExceptionHandler(UnsupportedMathOperationException.class)
-    public final ResponseEntity<ExceptionResponse> UnsupportedMathOperationExceptionHandler(Exception ex, WebRequest request) {
+    public final ResponseEntity<ExceptionResponse> unsupportedMathOperationExceptionHandler(Exception ex, WebRequest request) {
         ExceptionResponse response = new ExceptionResponse(
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false)
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> resourceNotFoundExceptionHandler(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
 }
