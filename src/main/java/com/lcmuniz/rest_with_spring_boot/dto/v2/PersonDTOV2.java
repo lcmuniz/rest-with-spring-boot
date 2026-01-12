@@ -1,23 +1,15 @@
-package com.lcmuniz.rest_with_spring_boot.model;
+package com.lcmuniz.rest_with_spring_boot.dto.v2;
 
-import jakarta.persistence.*;
-
+import java.util.Date;
 import java.util.Objects;
 
-@Entity
-@Table(schema = "rest-with-spring-boot", name = "people")
-public class Person {
+public class PersonDTOV2 {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "first_name", length = 100, nullable = false)
     private String firstName;
-    @Column(name = "last_name", length = 100, nullable = false)
     private String lastName;
-    @Column(length = 100, nullable = false)
+    private Date birthDate;
     private String email;
-    @Column(length = 6, nullable = false)
     private String gender;
 
     public Long getId() {
@@ -44,6 +36,14 @@ public class Person {
         this.lastName = lastName;
     }
 
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -63,13 +63,13 @@ public class Person {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(id, person.id) && Objects.equals(lastName, person.lastName) && Objects.equals(email, person.email) && Objects.equals(gender, person.gender);
+        PersonDTOV2 person = (PersonDTOV2) o;
+        return Objects.equals(id, person.id) && Objects.equals(lastName, person.lastName) && Objects.equals(birthDate, person.birthDate) && Objects.equals(email, person.email) && Objects.equals(gender, person.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, lastName, email, gender);
+        return Objects.hash(id, firstName, lastName, birthDate, email, gender);
     }
 
 }

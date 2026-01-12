@@ -1,7 +1,9 @@
-package com.lcmuniz.rest_with_spring_boot.services;
+package com.lcmuniz.rest_with_spring_boot.services.v2;
 
+import com.lcmuniz.rest_with_spring_boot.dto.v2.PersonDTOV2;
 import com.lcmuniz.rest_with_spring_boot.exception.ResourceNotFoundException;
-import com.lcmuniz.rest_with_spring_boot.model.Person;
+import com.lcmuniz.rest_with_spring_boot.mapper.ObjectMapper;
+import com.lcmuniz.rest_with_spring_boot.model.v1.Person;
 import com.lcmuniz.rest_with_spring_boot.repositories.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,38 +12,43 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 
 @Service
-public class PersonService {
+public class PersonV2Service {
 
     private final PersonRepository personRepository;
-    private final Logger logger = LoggerFactory.getLogger(PersonService.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(PersonV2Service.class.getName());
 
-    public PersonService(PersonRepository personRepository) {
+    public PersonV2Service(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
-    public Person findById(Long id) {
+    public PersonDTOV2 findById(Long id) {
         logger.info("Finding person by ID: " + id);
-        return personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Person not found!"));
+        Person person = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Person not found!"));
+        return ObjectMapper.map(person, PersonDTOV2.class);
     }
 
-    public Collection<Person> findAll() {
+    public Collection<PersonDTOV2> findAll() {
         logger.info("Finding all people");
-        return personRepository.findAll();
+        return ObjectMapper.mapList(personRepository.findAll(), PersonDTOV2.class);
     }
 
-    public Person create(Person person) {
+    public PersonDTOV2 create(PersonDTOV2 person) {
         logger.info("Creating one person");
-        return personRepository.save(person);
+        Person personEntity = ObjectMapper.map(person, Person.class);
+        Person savedPerson = personRepository.save(personEntity);
+        return ObjectMapper.map(savedPerson, PersonDTOV2.class);
     }
 
-    public Person update(Long id, Person person) {
+    public PersonDTOV2 update(Long id, PersonDTOV2 person) {
         logger.info("Updating one person");
         Person dbPerson = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Person not found!"));
         if (person.getFirstName() != null && !person.getFirstName().isBlank()) dbPerson.setFirstName(person.getFirstName());
         if (person.getLastName() != null && !person.getLastName().isBlank()) dbPerson.setLastName(person.getLastName());
+        if (person.getBirthDate() != null) dbPerson.setBirthDate(person.getBirthDate());
         if (person.getEmail() != null && !person.getEmail().isBlank()) dbPerson.setEmail(person.getEmail());
         if (person.getGender() != null && !person.getGender().isBlank()) dbPerson.setGender(person.getGender());
-        return personRepository.save(dbPerson);
+        Person savedPerson = personRepository.save(dbPerson);
+        return ObjectMapper.map(savedPerson, PersonDTOV2.class);
     }
 
     public void delete(Long id) {
