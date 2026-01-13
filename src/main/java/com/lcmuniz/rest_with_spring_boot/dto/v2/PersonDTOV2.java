@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lcmuniz.rest_with_spring_boot.serializers.GenderSerialize;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.Date;
 import java.util.Objects;
 
 @JsonFilter("NoSensitiveData")
-public class PersonDTOV2 {
+public class PersonDTOV2 extends RepresentationModel<PersonDTOV2> {
 
     private Long id;
     private String firstName;

@@ -2,11 +2,14 @@ package com.lcmuniz.rest_with_spring_boot.controllers.v2;
 
 import com.lcmuniz.rest_with_spring_boot.dto.v2.PersonDTOV2;
 import com.lcmuniz.rest_with_spring_boot.services.v2.PersonV2Service;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/people/v2")
@@ -20,28 +23,42 @@ public class PersonV2Controller {
 
     @GetMapping(value = "/{id}")
     public PersonDTOV2 findById(@PathVariable Long id) {
-        return personV2Service.findById(id);
+        PersonDTOV2 dto = personV2Service.findById(id);
+        return addHateoasLinks(dto);
     }
 
     @GetMapping
-    public Collection<PersonDTOV2> findById() {
-        return personV2Service.findAll();
+    public Collection<PersonDTOV2> findAll() {
+        Collection<PersonDTOV2> people = personV2Service.findAll();
+        people.forEach(this::addHateoasLinks);
+        return people;
     }
 
     @PostMapping
     public PersonDTOV2 create(@RequestBody PersonDTOV2 person) {
-        return personV2Service.create(person);
+        PersonDTOV2 dto = personV2Service.create(person);
+        return addHateoasLinks(dto);
     }
 
     @PutMapping("/{id}")
     public PersonDTOV2 update(@PathVariable Long id, @RequestBody PersonDTOV2 person) {
-        return personV2Service.update(id, person);
+        PersonDTOV2 dto = personV2Service.update(id, person);
+        return addHateoasLinks(dto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         personV2Service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private PersonDTOV2 addHateoasLinks(PersonDTOV2 dto) {
+        dto.add(linkTo(methodOn(PersonV2Controller.class).findById(dto.getId())).withSelfRel().withType(HttpMethod.GET.name()));
+        dto.add(linkTo(methodOn(PersonV2Controller.class).findAll()).withRel("find-all").withType(HttpMethod.GET.name()));
+        dto.add(linkTo(methodOn(PersonV2Controller.class).delete(dto.getId())).withRel("delete").withType(HttpMethod.DELETE.name()));
+        dto.add(linkTo(methodOn(PersonV2Controller.class).create(dto)).withRel("create").withType(HttpMethod.POST.name()));
+        dto.add(linkTo(methodOn(PersonV2Controller.class).create(dto)).withRel("update").withType(HttpMethod.PUT.name()));
+        return dto;
     }
 
 

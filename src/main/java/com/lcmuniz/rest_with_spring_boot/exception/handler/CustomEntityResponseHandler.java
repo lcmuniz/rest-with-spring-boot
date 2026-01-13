@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Date;
 
 @RestController
-//@ControllerAdvice
+@ControllerAdvice
 public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler {
 
         @ExceptionHandler(Exception.class)

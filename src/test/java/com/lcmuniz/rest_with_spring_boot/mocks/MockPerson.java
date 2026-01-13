@@ -32,7 +32,7 @@ public class MockPerson {
         return people;
     }
 
-    private Person mockEntity(Long id) {
+    public Person mockEntity(Long id) {
         Person person = new Person();
         person.setId(id);
         person.setFirstName("First Name "  + id);
