@@ -9,6 +9,12 @@ spring:
     hibernate:
       ddl-auto: none
     open-in-view: false
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 200MB
   flyway:
     schemas: rest_with_spring_boot
     default-schema: rest_with_spring_boot
@@ -17,3 +23,5 @@ logging:
     root: INFO
     com.lcmuniz.rest_with_spring_boot: DEBUG
 
+file:
+  upload-dir: ./tmp/uploads
