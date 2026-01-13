@@ -2,6 +2,10 @@ package com.lcmuniz.rest_with_spring_boot.controllers.v2;
 
 import com.lcmuniz.rest_with_spring_boot.dto.v2.PersonDTOV2;
 import com.lcmuniz.rest_with_spring_boot.services.v2.PersonV2Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +32,13 @@ public class PersonV2Controller {
     }
 
     @GetMapping
-    public Collection<PersonDTOV2> findAll() {
-        Collection<PersonDTOV2> people = personV2Service.findAll();
+    public ResponseEntity<Page<PersonDTOV2>> findAll(
+            @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "100") Integer size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "firstName"));
+        Page<PersonDTOV2> people = personV2Service.findAll(pageable);
         people.forEach(this::addHateoasLinks);
-        return people;
+        return ResponseEntity.ok(people);
     }
 
     @PostMapping
@@ -54,7 +61,7 @@ public class PersonV2Controller {
 
     private PersonDTOV2 addHateoasLinks(PersonDTOV2 dto) {
         dto.add(linkTo(methodOn(PersonV2Controller.class).findById(dto.getId())).withSelfRel().withType(HttpMethod.GET.name()));
-        dto.add(linkTo(methodOn(PersonV2Controller.class).findAll()).withRel("find-all").withType(HttpMethod.GET.name()));
+        dto.add(linkTo(methodOn(PersonV2Controller.class).findAll(0,0)).withRel("find-all").withType(HttpMethod.GET.name()));
         dto.add(linkTo(methodOn(PersonV2Controller.class).delete(dto.getId())).withRel("delete").withType(HttpMethod.DELETE.name()));
         dto.add(linkTo(methodOn(PersonV2Controller.class).create(dto)).withRel("create").withType(HttpMethod.POST.name()));
         dto.add(linkTo(methodOn(PersonV2Controller.class).create(dto)).withRel("update").withType(HttpMethod.PUT.name()));

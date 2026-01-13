@@ -7,6 +7,8 @@ import com.lcmuniz.rest_with_spring_boot.model.v1.Person;
 import com.lcmuniz.rest_with_spring_boot.repositories.PersonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -27,9 +29,9 @@ public class PersonV2Service {
         return ObjectMapper.map(person, PersonDTOV2.class);
     }
 
-    public Collection<PersonDTOV2> findAll() {
+    public Page<PersonDTOV2> findAll(Pageable pageable) {
         logger.info("Finding all people");
-        return ObjectMapper.mapList(personRepository.findAll(), PersonDTOV2.class);
+        return  personRepository.findAll(pageable).map(p -> ObjectMapper.map(p, PersonDTOV2.class));
     }
 
     public PersonDTOV2 create(PersonDTOV2 person) {
