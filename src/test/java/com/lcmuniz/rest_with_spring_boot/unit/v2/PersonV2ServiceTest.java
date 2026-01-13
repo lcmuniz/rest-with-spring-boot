@@ -1,10 +1,11 @@
-package com.lcmuniz.rest_with_spring_boot.services.v2;
+package com.lcmuniz.rest_with_spring_boot.unit.v2;
 
 import com.lcmuniz.rest_with_spring_boot.dto.v2.PersonDTOV2;
 import com.lcmuniz.rest_with_spring_boot.exception.ResourceNotFoundException;
 import com.lcmuniz.rest_with_spring_boot.mocks.MockPerson;
 import com.lcmuniz.rest_with_spring_boot.model.v1.Person;
 import com.lcmuniz.rest_with_spring_boot.repositories.PersonRepository;
+import com.lcmuniz.rest_with_spring_boot.services.v2.PersonV2Service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

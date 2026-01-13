@@ -1,0 +1,17 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: rest-with-spring-boot
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  flyway:
+    schemas: rest_with_spring_boot
+    default-schema: rest_with_spring_boot
+logging:
+  level:
+    root: INFO
+    com.lcmuniz.rest_with_spring_boot: DEBUG
+
