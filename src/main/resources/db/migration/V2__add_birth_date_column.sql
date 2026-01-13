@@ -1,0 +1,1 @@
+ALTER TABLE "rest-with-spring-boot".people ADD COLUMN birth_date DATE;

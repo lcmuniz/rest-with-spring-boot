@@ -22,6 +22,9 @@ public class Person {
     private String email;
     @Column(length = 6, nullable = false)
     private String gender;
+    @Column(length = 8)
+    private String password;
+
 
     public Long getId() {
         return id;
@@ -71,16 +74,23 @@ public class Person {
         this.gender = gender;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return Objects.equals(id, person.id) && Objects.equals(lastName, person.lastName) && Objects.equals(birthDate, person.birthDate) && Objects.equals(email, person.email) && Objects.equals(gender, person.gender);
+        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(birthDate, person.birthDate) && Objects.equals(email, person.email) && Objects.equals(gender, person.gender) && Objects.equals(password, person.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, birthDate, email, gender);
+        return Objects.hash(id, firstName, lastName, birthDate, email, gender, password);
     }
-
 }
