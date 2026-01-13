@@ -8,10 +8,16 @@ spring:
       ddl-auto: none
     open-in-view: false
   flyway:
-    schemas: rest_with_spring_boot
-    default-schema: rest_with_spring_boot
+    schemas: rest-with-spring-boot
+    default-schema: rest-with-spring-boot
 logging:
   level:
     root: INFO
     com.lcmuniz.rest_with_spring_boot: DEBUG
+
+security:
+  jwt:
+    token:
+      secret-key: secret-key
+      expire-length: 3600000
 
