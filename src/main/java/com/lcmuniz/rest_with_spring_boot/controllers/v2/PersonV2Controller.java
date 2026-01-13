@@ -2,6 +2,7 @@ package com.lcmuniz.rest_with_spring_boot.controllers.v2;
 
 import com.lcmuniz.rest_with_spring_boot.dto.v2.PersonDTOV2;
 import com.lcmuniz.rest_with_spring_boot.services.v2.PersonV2Service;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class PersonV2Controller {
         this.personV2Service = personV2Service;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public PersonDTOV2 findById(@PathVariable Long id) {
         return personV2Service.findById(id);
     }
